@@ -4,10 +4,13 @@ import com.fitnessdump.FitnessDump.DTOs.LoginDTO;
 import com.fitnessdump.FitnessDump.DTOs.UserCreateDTO;
 import com.fitnessdump.FitnessDump.Model.User;
 import com.fitnessdump.FitnessDump.Service.UserService;
+import com.fitnessdump.FitnessDump.Util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -16,6 +19,8 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
     // Регистрация на потребител
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody UserCreateDTO userCreateDTO) {
@@ -29,14 +34,19 @@ public class AuthenticationController {
         }
     }
 
-    // Логин на потребител
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDTO) {
-        String token = userService.login(loginDTO.getUsername(), loginDTO.getPassword());
-        if (token != null) {
-            return ResponseEntity.ok(token);
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        User user = userService.authenticateUser(loginDTO);
+
+        if (user != null) {
+            String token = jwtTokenUtil.generateToken(user.getId());
+
+            // Връщаме JSON обект с token и userId
+            return ResponseEntity.ok(Map.of(
+                    "token", token,
+                    "userId", user.getId()
+            ));
         }
-        // Връщаме статус 401 (Unauthorized), ако логинът не е успешен
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
     }
 }

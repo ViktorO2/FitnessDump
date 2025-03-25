@@ -1,7 +1,6 @@
 package com.fitnessdump.FitnessDump.DTOs;
 
-import com.fitnessdump.FitnessDump.Model.Roles.Role;
-
+import com.fitnessdump.FitnessDump.Model.Enum.Role;
 
 public class UserCreateDTO {
     private String username;
@@ -12,7 +11,8 @@ public class UserCreateDTO {
     private String confirmPassword;
     private Role role;
 
-    public UserCreateDTO(String username, String firstName, String lastName, String email, String password, String confirmPassword, Role role) {
+    public UserCreateDTO(String username, String firstName, String lastName, String email, String password,
+            String confirmPassword, Role role) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,6 +1,7 @@
 package com.fitnessdump.FitnessDump.Model;
 
-import com.fitnessdump.FitnessDump.Model.Roles.Role;
+import com.fitnessdump.FitnessDump.Model.Enum.Role;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
     private String firstName;
@@ -29,7 +30,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
 
     public User(Long id, String username, String password, String email, String firstName, String lastName, Role role) {
         this.id = id;

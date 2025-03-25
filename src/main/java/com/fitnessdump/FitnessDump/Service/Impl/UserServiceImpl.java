@@ -1,5 +1,6 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
+import com.fitnessdump.FitnessDump.DTOs.LoginDTO;
 import com.fitnessdump.FitnessDump.DTOs.UserCreateDTO;
 import com.fitnessdump.FitnessDump.Model.User;
 import com.fitnessdump.FitnessDump.Repository.UserRepository;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository, JwtTokenUtil jwtTokenUtil,
-            BCryptPasswordEncoder passwordEncoder) {
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtTokenUtil = jwtTokenUtil;
         this.passwordEncoder = passwordEncoder;
@@ -65,8 +66,24 @@ public class UserServiceImpl implements UserService {
     public String login(String username, String password) {
         Optional<User> user = findByUsername(username);
         if (user.isPresent() && passwordEncoder.matches(password, user.get().getPassword())) {
-            return jwtTokenUtil.generateToken(username);
+            return jwtTokenUtil.generateToken(user.get().getId());
         }
         return null;
     }
+
+    @Override
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    @Override
+    public User authenticateUser(LoginDTO loginDTO) {
+        Optional<User> user = findByUsername(loginDTO.getUsername());
+        if (user.isPresent() && passwordEncoder.matches(loginDTO.getPassword(), user.get().getPassword())) {
+            return user.get();
+        }
+        return null;
+    }
+
+
 }

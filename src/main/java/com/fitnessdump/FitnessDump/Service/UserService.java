@@ -1,5 +1,6 @@
 package com.fitnessdump.FitnessDump.Service;
 
+import com.fitnessdump.FitnessDump.DTOs.LoginDTO;
 import com.fitnessdump.FitnessDump.Model.User;
 import com.fitnessdump.FitnessDump.DTOs.UserCreateDTO;
 import java.util.Optional;
@@ -12,4 +13,6 @@ public interface UserService {
     Optional<User> findByEmail(String email);
 
     String login(String username, String password);
+    Optional<User> findById(Long userId);
+    User authenticateUser(LoginDTO loginDTO);
 }

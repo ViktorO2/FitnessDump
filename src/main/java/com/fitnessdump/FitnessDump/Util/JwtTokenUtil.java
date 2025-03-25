@@ -20,13 +20,13 @@ public class JwtTokenUtil {
     private long expirationTime = 86400000; // 24 hours in milliseconds
 
     // Generate JWT token
-    public String generateToken(String username) {
-        if (username == null || username.isEmpty()) {
-            throw new IllegalArgumentException("Username cannot be null or empty");
+    public String generateToken(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
         }
 
         return Jwts.builder()
-                .setSubject(username) // Set the username as the subject
+                .setSubject(String.valueOf(userId)) // Set the username as the subject
                 .setIssuedAt(new Date()) // Set the issue time as the current time
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Set the expiration time
                 .signWith(secretKey) // Sign the token with the generated SecretKey
@@ -61,22 +61,21 @@ public class JwtTokenUtil {
     }
 
     // Get the username from the JWT token
-    public String getUsernameFromToken(String token) {
+    public Long getUserIdFromToken(String token) {
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token cannot be null or empty");
         }
 
         try {
-            // Parse the token and extract the username (subject)
-            return Jwts.parserBuilder()
+            return Long.parseLong(Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
-                    .getSubject();
-        } catch (JwtException e) {
-            logger.error("Could not get username from token: {}", e.getMessage());
-            throw new JwtException("Could not get username from token", e);
+                    .getSubject());
+        } catch (JwtException | NumberFormatException e) {
+            logger.error("Could not extract user ID from token: {}", e.getMessage());
+            throw new JwtException("Invalid token", e);
         }
     }
 }
