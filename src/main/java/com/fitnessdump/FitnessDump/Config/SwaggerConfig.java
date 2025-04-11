@@ -12,8 +12,8 @@ public class SwaggerConfig {
     @Bean
     public GroupedOpenApi publicApi() {
         return GroupedOpenApi.builder()
-                .group("public-api")  // Името на групата (можете да добавите много групи, ако искате)
-                .pathsToMatch("/api/**")  // Пътищата, които да се включат в документацията
+                .group("public-api")
+                .pathsToMatch("/api/**")
                 .build();
     }
 }

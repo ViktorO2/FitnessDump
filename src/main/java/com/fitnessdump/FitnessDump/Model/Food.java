@@ -1,9 +1,6 @@
 package com.fitnessdump.FitnessDump.Model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "foods")
@@ -27,7 +24,6 @@ public class Food {
 
     @Column(nullable = false)
     private double carbs;
-
 
     public Food(Long id, String name, String description, double kcal, double protein, double fat, double carbs) {
         this.id = id;
@@ -53,6 +49,7 @@ public class Food {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -98,4 +95,3 @@ public class Food {
     }
 
 }
-
