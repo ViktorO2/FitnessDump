@@ -18,7 +18,8 @@ public class TrainingSessionController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<TrainingSessionDTO> saveTrainingSession(@PathVariable Long userId, @RequestBody TrainingSessionDTO trainingSessionDTO) {
+    public ResponseEntity<TrainingSessionDTO> saveTrainingSession(@PathVariable Long userId,
+            @RequestBody TrainingSessionDTO trainingSessionDTO) {
         trainingSessionDTO.setUserId(userId);
         TrainingSessionDTO savedSession = trainingSessionService.createTrainingSession(trainingSessionDTO);
         return ResponseEntity.status(201).body(savedSession);

@@ -1,17 +1,22 @@
 package com.fitnessdump.FitnessDump.Model;
 
+import com.fitnessdump.FitnessDump.Model.Enum.ActivityLevel;
+import com.fitnessdump.FitnessDump.Model.Enum.Gender;
 import com.fitnessdump.FitnessDump.Model.Enum.GoalType;
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "personal_settings")
 public class PersonalSettings {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
+
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    public User user;
+    private User user;
 
     private double currentWeight;
     private double targetWeight;
@@ -20,13 +25,31 @@ public class PersonalSettings {
     private double protein;
     private double fats;
     private double carbs;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private GoalType goal;
 
-    public PersonalSettings(User user, double currentWeight, double targetWeight, double height,
-                            double dailyCalories, double protein, double fats, double carbs, GoalType goal) {
+    // Нови полета
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
+    private Integer age;
+
+    @Enumerated(EnumType.STRING)
+    private ActivityLevel activityLevel;
+
+    private Double bmr;
+    private Double tdee;
+
+    @Column(name = "last_calculation")
+    private LocalDateTime lastCalculation;
+
+    public PersonalSettings() {
+    }
+
+    public PersonalSettings(Long id, User user, double currentWeight, double targetWeight, double height, double dailyCalories, double protein, double fats, double carbs, GoalType goal, Gender gender, Integer age, ActivityLevel activityLevel, Double bmr, Double tdee, LocalDateTime lastCalculation) {
+        this.id = id;
         this.user = user;
         this.currentWeight = currentWeight;
         this.targetWeight = targetWeight;
@@ -36,10 +59,12 @@ public class PersonalSettings {
         this.fats = fats;
         this.carbs = carbs;
         this.goal = goal;
-    }
-
-    public PersonalSettings() {
-
+        this.gender = gender;
+        this.age = age;
+        this.activityLevel = activityLevel;
+        this.bmr = bmr;
+        this.tdee = tdee;
+        this.lastCalculation = lastCalculation;
     }
 
     public Long getId() {
@@ -120,5 +145,53 @@ public class PersonalSettings {
 
     public void setGoal(GoalType goal) {
         this.goal = goal;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public ActivityLevel getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(ActivityLevel activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
+    public Double getBmr() {
+        return bmr;
+    }
+
+    public void setBmr(Double bmr) {
+        this.bmr = bmr;
+    }
+
+    public Double getTdee() {
+        return tdee;
+    }
+
+    public void setTdee(Double tdee) {
+        this.tdee = tdee;
+    }
+
+    public LocalDateTime getLastCalculation() {
+        return lastCalculation;
+    }
+
+    public void setLastCalculation(LocalDateTime lastCalculation) {
+        this.lastCalculation = lastCalculation;
     }
 }

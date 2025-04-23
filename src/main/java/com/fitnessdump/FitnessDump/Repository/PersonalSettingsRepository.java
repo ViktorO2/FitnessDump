@@ -9,5 +9,8 @@ import java.util.Optional;
 @Repository
 public interface PersonalSettingsRepository extends JpaRepository<PersonalSettings, Long> {
     Optional<PersonalSettings> findByUser(User user);
+    void deleteByUser(User user);
 
+
+    Optional<PersonalSettings> findByUserId(Long userId);
 }

@@ -60,7 +60,7 @@ public class PredefinedProgramServiceImpl implements PredefinedProgramService {
 
     @Override
     public List<PredefinedProgramDTO> getProgramsByDifficulty(DifficultyLevel difficultyLevel) {
-        return predefinedProgramRepository.findByDifficultyLevel(difficultyLevel).stream()
+        return predefinedProgramRepository.findByDifficulty(difficultyLevel).stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

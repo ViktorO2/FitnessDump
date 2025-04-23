@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface PredefinedProgramRepository extends JpaRepository<PredefinedProgram,Long> {
     List<PredefinedProgram> findByGoal(ProgramGoal programGoal);
-    List<PredefinedProgram>findByDifficultyLevel(DifficultyLevel difficultyLevel);
+    List<PredefinedProgram>findByDifficulty(DifficultyLevel difficultyLevel);
 
 }

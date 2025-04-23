@@ -15,4 +15,6 @@ public interface UserService {
     String login(String username, String password);
     Optional<User> findById(Long userId);
     User authenticateUser(LoginDTO loginDTO);
+
+    User getUserById(Long userId);
 }
