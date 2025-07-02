@@ -1,8 +1,8 @@
 package com.fitnessdump.FitnessDump.Service;
 
-import com.fitnessdump.FitnessDump.DTOs.MealDTO;
-import com.fitnessdump.FitnessDump.DTOs.MealPlanDTO;
-import com.fitnessdump.FitnessDump.DTOs.NutritionSummaryDTO;
+import com.fitnessdump.FitnessDump.DTOs.Meals.MealDTO;
+import com.fitnessdump.FitnessDump.DTOs.Meals.MealPlanDTO;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.NutritionSummaryDTO;
 import com.fitnessdump.FitnessDump.Model.Enum.GoalType;
 
 import java.util.List;

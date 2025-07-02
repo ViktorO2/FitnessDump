@@ -1,7 +1,7 @@
 package com.fitnessdump.FitnessDump.Repository;
 
-import com.fitnessdump.FitnessDump.Model.PersonalSettings;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.Model.Users.PersonalSettings;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

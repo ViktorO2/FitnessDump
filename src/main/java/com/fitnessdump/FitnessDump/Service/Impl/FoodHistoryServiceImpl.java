@@ -1,14 +1,13 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.FoodHistoryDTO;
-import com.fitnessdump.FitnessDump.Model.Food;
-import com.fitnessdump.FitnessDump.Model.FoodHistory;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.FoodHistoryDTO;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Food;
+import com.fitnessdump.FitnessDump.Model.Nutrition.FoodHistory;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import com.fitnessdump.FitnessDump.Repository.FoodHistoryRepository;
 import com.fitnessdump.FitnessDump.Repository.FoodRepository;
 import com.fitnessdump.FitnessDump.Repository.UserRepository;
 import com.fitnessdump.FitnessDump.Service.FoodHistoryService;
-import com.fitnessdump.FitnessDump.Service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,8 @@ public class FoodHistoryServiceImpl implements FoodHistoryService {
     private final UserRepository userRepository;
 
     @Autowired
-    public FoodHistoryServiceImpl(FoodHistoryRepository foodHistoryRepository, FoodRepository foodRepository, UserRepository userRepository) {
+    public FoodHistoryServiceImpl(FoodHistoryRepository foodHistoryRepository, FoodRepository foodRepository,
+            UserRepository userRepository) {
         this.foodHistoryRepository = foodHistoryRepository;
         this.foodRepository = foodRepository;
         this.userRepository = userRepository;
@@ -51,10 +51,8 @@ public class FoodHistoryServiceImpl implements FoodHistoryService {
         foodHistory.setUser(userOptional.get());
         foodHistory.setDate(foodHistoryDTO.getDate());
 
-
         List<Food> foods = foodRepository.findAllById(foodHistoryDTO.getFoodIds());
         foodHistory.setFoods(foods);
-
 
         FoodHistory savedFoodHistory = foodHistoryRepository.save(foodHistory);
         return convertToDTO(savedFoodHistory);

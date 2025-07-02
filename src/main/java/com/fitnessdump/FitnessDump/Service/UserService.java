@@ -1,8 +1,8 @@
 package com.fitnessdump.FitnessDump.Service;
 
-import com.fitnessdump.FitnessDump.DTOs.LoginDTO;
-import com.fitnessdump.FitnessDump.Model.User;
-import com.fitnessdump.FitnessDump.DTOs.UserCreateDTO;
+import com.fitnessdump.FitnessDump.DTOs.Auth.LoginDTO;
+import com.fitnessdump.FitnessDump.Model.Users.User;
+import com.fitnessdump.FitnessDump.DTOs.Auth.UserCreateDTO;
 import java.util.Optional;
 
 public interface UserService {

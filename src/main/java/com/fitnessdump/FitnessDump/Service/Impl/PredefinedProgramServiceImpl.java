@@ -1,10 +1,13 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.PredefinedProgramDTO;
-import com.fitnessdump.FitnessDump.DTOs.TrainingProgramDTO;
-import com.fitnessdump.FitnessDump.Model.*;
+import com.fitnessdump.FitnessDump.DTOs.Training.PredefinedProgramDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.TrainingProgramDTO;
 import com.fitnessdump.FitnessDump.Model.Enum.DifficultyLevel;
 import com.fitnessdump.FitnessDump.Model.Enum.ProgramGoal;
+import com.fitnessdump.FitnessDump.Model.Training.PredefinedProgram;
+import com.fitnessdump.FitnessDump.Model.Training.ProgramExercise;
+import com.fitnessdump.FitnessDump.Model.Training.TrainingProgram;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import com.fitnessdump.FitnessDump.Repository.PredefinedProgramRepository;
 import com.fitnessdump.FitnessDump.Repository.UserRepository;
 import com.fitnessdump.FitnessDump.Repository.TrainingProgramRepository;

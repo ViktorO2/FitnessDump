@@ -1,15 +1,19 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.*;
+import com.fitnessdump.FitnessDump.DTOs.Meals.MealDTO;
+import com.fitnessdump.FitnessDump.DTOs.Meals.MealItemDTO;
+import com.fitnessdump.FitnessDump.DTOs.Meals.MealPlanDTO;
+import com.fitnessdump.FitnessDump.DTOs.Meals.MealPlanDayDTO;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.NutritionSummaryDTO;
 import com.fitnessdump.FitnessDump.Exception.ResourceNotFoundException;
 import com.fitnessdump.FitnessDump.Model.Enum.GoalType;
-import com.fitnessdump.FitnessDump.Model.Food;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Food;
 import com.fitnessdump.FitnessDump.Model.Meal.Meal;
 import com.fitnessdump.FitnessDump.Model.Meal.MealItem;
 import com.fitnessdump.FitnessDump.Model.Meal.MealPlan;
 import com.fitnessdump.FitnessDump.Model.Meal.MealPlanDay;
-import com.fitnessdump.FitnessDump.Model.Recipe;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Recipe;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import com.fitnessdump.FitnessDump.Repository.*;
 import com.fitnessdump.FitnessDump.Service.MealPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 @Service
 public class MealPlanServiceImpl implements MealPlanService {
     private final MealPlanRepository mealPlanRepository;
@@ -29,7 +34,9 @@ public class MealPlanServiceImpl implements MealPlanService {
     private final RecipeRepository recipeRepository;
 
     @Autowired
-    public MealPlanServiceImpl(MealPlanRepository mealPlanRepository, MealPlanDayRepository mealPlanDayRepository, MealRepository mealRepository, MealItemRepository mealItemRepository, UserRepository userRepository, FoodRepository foodRepository, RecipeRepository recipeRepository) {
+    public MealPlanServiceImpl(MealPlanRepository mealPlanRepository, MealPlanDayRepository mealPlanDayRepository,
+            MealRepository mealRepository, MealItemRepository mealItemRepository, UserRepository userRepository,
+            FoodRepository foodRepository, RecipeRepository recipeRepository) {
         this.mealPlanRepository = mealPlanRepository;
         this.mealPlanDayRepository = mealPlanDayRepository;
         this.mealRepository = mealRepository;
@@ -47,25 +54,33 @@ public class MealPlanServiceImpl implements MealPlanService {
         MealPlan mealPlan = new MealPlan();
         updateMealPlanFromDTO(mealPlan, mealPlanDTO);
         mealPlan.setUser(user);
-        for (MealPlanDayDTO dayDTO : mealPlanDTO.getDays()) {
-            MealPlanDay day = new MealPlanDay();
-            day.setDayOfWeek(dayDTO.getDayOfWeek());
-            day.setMealPlan(mealPlan);
 
-            // Create meals for each day
-            for (MealDTO mealDTO : dayDTO.getMeals()) {
-                Meal meal = createMealFromDTO(mealDTO);
-                meal.setDay(day);
-                day.getMeals().add(meal);
+        if (mealPlanDTO.getDays() != null) {
+            for (MealPlanDayDTO dayDTO : mealPlanDTO.getDays()) {
+                if (dayDTO != null) {
+                    MealPlanDay day = new MealPlanDay();
+                    day.setDayOfWeek(dayDTO.getDayOfWeek());
+                    day.setMealPlan(mealPlan);
+
+                    // Create meals for each day
+                    if (dayDTO.getMeals() != null) {
+                        for (MealDTO mealDTO : dayDTO.getMeals()) {
+                            if (mealDTO != null) {
+                                Meal meal = createMealFromDTO(mealDTO);
+                                meal.setDay(day);
+                                day.getMeals().add(meal);
+                            }
+                        }
+                    }
+
+                    mealPlan.getDays().add(day);
+                }
             }
-
-            mealPlan.getDays().add(day);
         }
 
         MealPlan savedMealPlan = mealPlanRepository.save(mealPlan);
         return convertToDTO(savedMealPlan);
     }
-
 
     @Override
     public MealPlanDTO updateMealPlan(Long id, MealPlanDTO mealPlanDTO) {
@@ -74,16 +89,26 @@ public class MealPlanServiceImpl implements MealPlanService {
 
         updateMealPlanFromDTO(existingMeatPlan, mealPlanDTO);
         existingMeatPlan.getDays().clear();
-        for (MealPlanDayDTO dayDTO : mealPlanDTO.getDays()) {
-            MealPlanDay day = new MealPlanDay();
-            day.setDayOfWeek(dayDTO.getDayOfWeek());
-            day.setMealPlan(existingMeatPlan);
-            for (MealDTO mealDTO : dayDTO.getMeals()) {
-                Meal meal = createMealFromDTO(mealDTO);
-                meal.setDay(day);
-                day.getMeals().add(meal);
+
+        if (mealPlanDTO.getDays() != null) {
+            for (MealPlanDayDTO dayDTO : mealPlanDTO.getDays()) {
+                if (dayDTO != null) {
+                    MealPlanDay day = new MealPlanDay();
+                    day.setDayOfWeek(dayDTO.getDayOfWeek());
+                    day.setMealPlan(existingMeatPlan);
+
+                    if (dayDTO.getMeals() != null) {
+                        for (MealDTO mealDTO : dayDTO.getMeals()) {
+                            if (mealDTO != null) {
+                                Meal meal = createMealFromDTO(mealDTO);
+                                meal.setDay(day);
+                                day.getMeals().add(meal);
+                            }
+                        }
+                    }
+                    existingMeatPlan.getDays().add(day);
+                }
             }
-            existingMeatPlan.getDays().add(day);
         }
         MealPlan updateMealPlan = mealPlanRepository.save(existingMeatPlan);
         return convertToDTO(updateMealPlan);
@@ -192,24 +217,28 @@ public class MealPlanServiceImpl implements MealPlanService {
         Meal meal = new Meal();
         meal.setType(dto.getType());
 
-        for (MealItemDTO itemDTO : dto.getItems()) {
-            MealItem item = new MealItem();
-            item.setAmount(itemDTO.getAmount());
+        if (dto.getItems() != null) {
+            for (MealItemDTO itemDTO : dto.getItems()) {
+                if (itemDTO != null) {
+                    MealItem item = new MealItem();
+                    item.setAmount(itemDTO.getAmount());
 
-            if (itemDTO.getFoodId() != null) {
-                Food food = foodRepository.findById(itemDTO.getFoodId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Food not found"));
-                item.setFood(food);
+                    if (itemDTO.getFoodId() != null) {
+                        Food food = foodRepository.findById(itemDTO.getFoodId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Food not found"));
+                        item.setFood(food);
+                    }
+
+                    if (itemDTO.getRecipeId() != null) {
+                        Recipe recipe = recipeRepository.findById(itemDTO.getRecipeId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Recipe not found"));
+                        item.setRecipe(recipe);
+                    }
+
+                    item.setMeal(meal);
+                    meal.getItems().add(item);
+                }
             }
-
-            if (itemDTO.getRecipeId() != null) {
-                Recipe recipe = recipeRepository.findById(itemDTO.getRecipeId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Recipe not found"));
-                item.setRecipe(recipe);
-            }
-
-            item.setMeal(meal);
-            meal.getItems().add(item);
         }
 
         return meal;
@@ -231,24 +260,28 @@ public class MealPlanServiceImpl implements MealPlanService {
         meal.setType(dto.getType());
         meal.getItems().clear();
 
-        for (MealItemDTO itemDTO : dto.getItems()) {
-            MealItem item = new MealItem();
-            item.setAmount(itemDTO.getAmount());
+        if (dto.getItems() != null) {
+            for (MealItemDTO itemDTO : dto.getItems()) {
+                if (itemDTO != null) {
+                    MealItem item = new MealItem();
+                    item.setAmount(itemDTO.getAmount());
 
-            if (itemDTO.getFoodId() != null) {
-                Food food = foodRepository.findById(itemDTO.getFoodId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Food not found"));
-                item.setFood(food);
+                    if (itemDTO.getFoodId() != null) {
+                        Food food = foodRepository.findById(itemDTO.getFoodId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Food not found"));
+                        item.setFood(food);
+                    }
+
+                    if (itemDTO.getRecipeId() != null) {
+                        Recipe recipe = recipeRepository.findById(itemDTO.getRecipeId())
+                                .orElseThrow(() -> new ResourceNotFoundException("Recipe not found"));
+                        item.setRecipe(recipe);
+                    }
+
+                    item.setMeal(meal);
+                    meal.getItems().add(item);
+                }
             }
-
-            if (itemDTO.getRecipeId() != null) {
-                Recipe recipe = recipeRepository.findById(itemDTO.getRecipeId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Recipe not found"));
-                item.setRecipe(recipe);
-            }
-
-            item.setMeal(meal);
-            meal.getItems().add(item);
         }
     }
 

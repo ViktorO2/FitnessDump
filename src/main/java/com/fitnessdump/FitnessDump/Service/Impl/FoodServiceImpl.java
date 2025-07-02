@@ -1,7 +1,8 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.FoodDTO;
-import com.fitnessdump.FitnessDump.Model.Food;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.FoodDTO;
+import com.fitnessdump.FitnessDump.Model.Enum.FoodCategory;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Food;
 import com.fitnessdump.FitnessDump.Repository.FoodRepository;
 import com.fitnessdump.FitnessDump.Service.FoodService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,9 @@ public class FoodServiceImpl implements FoodService {
         this.foodRepository = foodRepository;
     }
 
-
     private FoodDTO convertToDTO(Food food) {
         return new FoodDTO(food.getId(), food.getName(), food.getDescription(), food.getKcal(),
-                food.getProtein(), food.getFat(), food.getCarbs());
+                food.getProtein(), food.getFat(), food.getCarbs(), food.getCategory());
     }
 
     @Override
@@ -35,20 +35,18 @@ public class FoodServiceImpl implements FoodService {
         if (existingFoodOptional.isPresent()) {
             Food existingFood = existingFoodOptional.get();
 
-
             existingFood.setName(foodDTO.getName());
             existingFood.setDescription(foodDTO.getDescription());
             existingFood.setKcal(foodDTO.getKcal());
             existingFood.setProtein(foodDTO.getProtein());
             existingFood.setFat(foodDTO.getFat());
             existingFood.setCarbs(foodDTO.getCarbs());
-
+            existingFood.setCategory(foodDTO.getCategory());
 
             Food updatedFood = foodRepository.save(existingFood);
 
             return convertToDTO(updatedFood);
         } else {
-            // Храната не е намерена, хвърляме изключение
             throw new IllegalArgumentException("Food with id " + id + " not found.");
         }
     }
@@ -82,7 +80,7 @@ public class FoodServiceImpl implements FoodService {
         newFood.setProtein(foodDTO.getProtein());
         newFood.setFat(foodDTO.getFat());
         newFood.setCarbs(foodDTO.getCarbs());
-
+        newFood.setCategory(foodDTO.getCategory());
 
         Food savedFood = foodRepository.save(newFood);
 
@@ -96,5 +94,12 @@ public class FoodServiceImpl implements FoodService {
         } else {
             throw new IllegalArgumentException("Food with id " + id + " not found.");
         }
+    }
+
+    @Override
+    public List<FoodDTO> getFoodsByCategory(FoodCategory category) {
+        return foodRepository.findByCategory(category).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 }

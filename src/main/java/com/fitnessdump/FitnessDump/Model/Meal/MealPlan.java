@@ -1,11 +1,11 @@
 package com.fitnessdump.FitnessDump.Model.Meal;
 
 import com.fitnessdump.FitnessDump.Model.Enum.GoalType;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "meal_plans")
@@ -39,11 +39,14 @@ public class MealPlan {
     private Double targetCarbs;
 
     @OneToMany(mappedBy = "mealPlan", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MealPlanDay> days;
+    private List<MealPlanDay> days = new ArrayList<>();
 
-    public MealPlan() {}
+    public MealPlan() {
+    }
 
-    public MealPlan(Long id, User user, String name, String description, LocalDate startDate, LocalDate endDate, GoalType goal, Double targetCalories, Double targetProtein, Double targetFats, Double targetCarbs, List<MealPlanDay> days) {
+    public MealPlan(Long id, User user, String name, String description, LocalDate startDate, LocalDate endDate,
+            GoalType goal, Double targetCalories, Double targetProtein, Double targetFats, Double targetCarbs,
+            List<MealPlanDay> days) {
         this.id = id;
         this.user = user;
         this.name = name;
@@ -55,7 +58,7 @@ public class MealPlan {
         this.targetProtein = targetProtein;
         this.targetFats = targetFats;
         this.targetCarbs = targetCarbs;
-        this.days = days;
+        this.days = days != null ? days : new ArrayList<>();
     }
 
     public Long getId() {
@@ -151,6 +154,6 @@ public class MealPlan {
     }
 
     public void setDays(List<MealPlanDay> days) {
-        this.days = days;
+        this.days = days != null ? days : new ArrayList<>();
     }
 }

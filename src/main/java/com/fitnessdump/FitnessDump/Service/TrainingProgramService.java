@@ -1,7 +1,6 @@
 package com.fitnessdump.FitnessDump.Service;
 
-import com.fitnessdump.FitnessDump.DTOs.ExerciseCategoryDTO;
-import com.fitnessdump.FitnessDump.DTOs.TrainingProgramDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.TrainingProgramDTO;
 
 import java.util.List;
 import java.util.Optional;

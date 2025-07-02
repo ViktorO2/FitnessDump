@@ -1,6 +1,6 @@
 package com.fitnessdump.FitnessDump.Repository;
 
-import com.fitnessdump.FitnessDump.Model.RecipeIngredient;
+import com.fitnessdump.FitnessDump.Model.Nutrition.RecipeIngredient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

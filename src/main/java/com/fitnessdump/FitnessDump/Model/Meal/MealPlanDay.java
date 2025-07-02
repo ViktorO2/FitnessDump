@@ -2,6 +2,7 @@ package com.fitnessdump.FitnessDump.Model.Meal;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,15 +20,16 @@ public class MealPlanDay {
     private Integer dayOfWeek;
 
     @OneToMany(mappedBy = "day", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Meal> meals;
+    private List<Meal> meals = new ArrayList<>();
 
-    public MealPlanDay() {}
+    public MealPlanDay() {
+    }
 
     public MealPlanDay(Long id, MealPlan mealPlan, Integer dayOfWeek, List<Meal> meals) {
         this.id = id;
         this.mealPlan = mealPlan;
         this.dayOfWeek = dayOfWeek;
-        this.meals = meals;
+        this.meals = meals != null ? meals : new ArrayList<>();
     }
 
     public Long getId() {
@@ -59,6 +61,6 @@ public class MealPlanDay {
     }
 
     public void setMeals(List<Meal> meals) {
-        this.meals = meals;
+        this.meals = meals != null ? meals : new ArrayList<>();
     }
 }

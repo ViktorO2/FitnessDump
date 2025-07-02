@@ -1,6 +1,6 @@
 package com.fitnessdump.FitnessDump.Controller;
 
-import com.fitnessdump.FitnessDump.DTOs.RecipeIngredientDTO;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.RecipeIngredientDTO;
 import com.fitnessdump.FitnessDump.Service.RecipeIngredientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

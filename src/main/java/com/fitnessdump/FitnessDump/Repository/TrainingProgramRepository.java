@@ -1,6 +1,6 @@
 package com.fitnessdump.FitnessDump.Repository;
 
-import com.fitnessdump.FitnessDump.Model.TrainingProgram;
+import com.fitnessdump.FitnessDump.Model.Training.TrainingProgram;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.fitnessdump.FitnessDump.Controller;
 
-import com.fitnessdump.FitnessDump.DTOs.TrainingSessionDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.TrainingSessionDTO;
 import com.fitnessdump.FitnessDump.Service.TrainingSessionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

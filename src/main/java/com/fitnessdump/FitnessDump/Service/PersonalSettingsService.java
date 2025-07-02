@@ -1,9 +1,8 @@
 package com.fitnessdump.FitnessDump.Service;
 
-import com.fitnessdump.FitnessDump.DTOs.CalorieCalculatorRequestDTO;
-import com.fitnessdump.FitnessDump.DTOs.CalorieCalculatorResponseDTO;
-import com.fitnessdump.FitnessDump.DTOs.PersonalSettingsDTO;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.CalorieCalculatorResponseDTO;
+import com.fitnessdump.FitnessDump.DTOs.User.PersonalSettingsDTO;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 
 
 import java.util.Optional;

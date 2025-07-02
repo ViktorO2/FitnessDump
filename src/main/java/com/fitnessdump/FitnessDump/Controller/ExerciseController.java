@@ -1,6 +1,6 @@
 package com.fitnessdump.FitnessDump.Controller;
 
-import com.fitnessdump.FitnessDump.DTOs.ExerciseDTO;
+import com.fitnessdump.FitnessDump.DTOs.Exercise.ExerciseDTO;
 import com.fitnessdump.FitnessDump.Service.ExerciseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

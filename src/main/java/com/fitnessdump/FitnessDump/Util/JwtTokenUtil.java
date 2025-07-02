@@ -8,45 +8,54 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtTokenUtil {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenUtil.class);
 
-    // Use a securely generated key for HS256
-    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    @Value("${jwt.secret}")
+    private String secretKeyString;
 
-    private long expirationTime = 86400000; // 24 hours in milliseconds
+    private SecretKey secretKey;
+    private long expirationTime = 86400000; // 24 часа в милисекунди
 
-    // Generate JWT token
+    private void initializeSecretKey() {
+        if (secretKey == null) {
+            // Използваме Keys.hmacShaKeyFor за създаване на сигурен ключ
+            secretKey = Keys.hmacShaKeyFor(secretKeyString.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
     public String generateToken(Long userId) {
         if (userId == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
 
+        initializeSecretKey();
+
         return Jwts.builder()
-                .setSubject(String.valueOf(userId)) // Set the username as the subject
-                .setIssuedAt(new Date()) // Set the issue time as the current time
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Set the expiration time
-                .signWith(secretKey) // Sign the token with the generated SecretKey
+                .setSubject(String.valueOf(userId))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(secretKey, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Validate the JWT token
     public boolean validateToken(String token) {
         if (token == null || token.isEmpty()) {
             return false;
         }
 
         try {
-            // Parse and validate the token
+            initializeSecretKey();
             Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
             return true;
-        } catch (SignatureException e) {
+        } catch (SecurityException e) {
             logger.error("Invalid JWT signature: {}", e.getMessage());
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
@@ -60,20 +69,20 @@ public class JwtTokenUtil {
         return false;
     }
 
-    // Get the username from the JWT token
     public Long getUserIdFromToken(String token) {
         if (token == null || token.isEmpty()) {
             throw new IllegalArgumentException("Token cannot be null or empty");
         }
 
         try {
+            initializeSecretKey();
             return Long.parseLong(Jwts.parserBuilder()
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject());
-        } catch (JwtException | NumberFormatException e) {
+        } catch (Exception e) {
             logger.error("Could not extract user ID from token: {}", e.getMessage());
             throw new JwtException("Invalid token", e);
         }

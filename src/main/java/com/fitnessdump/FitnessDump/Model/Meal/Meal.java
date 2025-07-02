@@ -3,6 +3,7 @@ package com.fitnessdump.FitnessDump.Model.Meal;
 import com.fitnessdump.FitnessDump.Model.Enum.MealType;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,16 +22,17 @@ public class Meal {
     private MealType type;
 
     @OneToMany(mappedBy = "meal", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MealItem> items;
+    private List<MealItem> items = new ArrayList<>();
 
     // Constructors
-    public Meal() {}
+    public Meal() {
+    }
 
     public Meal(Long id, MealPlanDay day, MealType type, List<MealItem> items) {
         this.id = id;
         this.day = day;
         this.type = type;
-        this.items = items;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
     public Long getId() {
@@ -62,6 +64,6 @@ public class Meal {
     }
 
     public void setItems(List<MealItem> items) {
-        this.items = items;
+        this.items = items != null ? items : new ArrayList<>();
     }
 }

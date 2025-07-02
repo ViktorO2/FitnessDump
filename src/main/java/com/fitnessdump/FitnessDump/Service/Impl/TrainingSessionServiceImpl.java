@@ -1,8 +1,8 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.TrainingSessionDTO;
-import com.fitnessdump.FitnessDump.Model.TrainingSession;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.DTOs.Training.TrainingSessionDTO;
+import com.fitnessdump.FitnessDump.Model.Training.TrainingSession;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import com.fitnessdump.FitnessDump.Repository.TrainingSessionRepository;
 import com.fitnessdump.FitnessDump.Repository.UserRepository;
 import com.fitnessdump.FitnessDump.Service.TrainingSessionService;

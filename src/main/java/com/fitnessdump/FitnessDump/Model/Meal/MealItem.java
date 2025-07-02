@@ -1,7 +1,7 @@
 package com.fitnessdump.FitnessDump.Model.Meal;
 
-import com.fitnessdump.FitnessDump.Model.Food;
-import com.fitnessdump.FitnessDump.Model.Recipe;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Food;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Recipe;
 import jakarta.persistence.*;
 
 @Entity

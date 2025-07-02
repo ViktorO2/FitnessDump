@@ -1,8 +1,8 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.LoginDTO;
-import com.fitnessdump.FitnessDump.DTOs.UserCreateDTO;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.DTOs.Auth.LoginDTO;
+import com.fitnessdump.FitnessDump.DTOs.Auth.UserCreateDTO;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import com.fitnessdump.FitnessDump.Repository.UserRepository;
 import com.fitnessdump.FitnessDump.Service.UserService;
 import com.fitnessdump.FitnessDump.Util.JwtTokenUtil;
@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserCreateDTO userCreateDTO) {
-        // Проверка за съществуващ потребител с това потребителско име или имейл
         if (userRepository.findByUsername(userCreateDTO.getUsername()).isPresent()) {
             throw new IllegalArgumentException("Username already exists");
         }

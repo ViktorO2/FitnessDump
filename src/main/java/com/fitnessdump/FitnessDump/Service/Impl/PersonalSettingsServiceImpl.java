@@ -1,12 +1,12 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.CalorieCalculatorResponseDTO;
-import com.fitnessdump.FitnessDump.DTOs.MacroDistributionDTO;
-import com.fitnessdump.FitnessDump.DTOs.PersonalSettingsDTO;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.CalorieCalculatorResponseDTO;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.MacroDistributionDTO;
+import com.fitnessdump.FitnessDump.DTOs.User.PersonalSettingsDTO;
 import com.fitnessdump.FitnessDump.Exception.ResourceNotFoundException;
 import com.fitnessdump.FitnessDump.Exception.UserNotFoundException;
-import com.fitnessdump.FitnessDump.Model.PersonalSettings;
-import com.fitnessdump.FitnessDump.Model.User;
+import com.fitnessdump.FitnessDump.Model.Users.PersonalSettings;
+import com.fitnessdump.FitnessDump.Model.Users.User;
 import com.fitnessdump.FitnessDump.Repository.PersonalSettingsRepository;
 import com.fitnessdump.FitnessDump.Repository.UserRepository;
 import com.fitnessdump.FitnessDump.Service.PersonalSettingsService;
@@ -101,7 +101,6 @@ public class PersonalSettingsServiceImpl implements PersonalSettingsService {
     @Override
     @Transactional
     public PersonalSettingsDTO updateFromCalculator(Long userId, CalorieCalculatorResponseDTO calculation) {
-        // Намираме или създаваме настройките за потребителя
         PersonalSettings settings = personalSettingsRepository.findByUserId(userId)
                 .orElseGet(() -> {
                     User user = userRepository.findById(userId)
@@ -111,24 +110,19 @@ public class PersonalSettingsServiceImpl implements PersonalSettingsService {
                     return newSettings;
                 });
 
-        // Актуализираме настройките с новите изчисления
         settings.setBmr(calculation.getBmr());
         settings.setTdee(calculation.getTdee());
         settings.setDailyCalories(calculation.getDailyCalories());
 
-        // Актуализираме макросите
         MacroDistributionDTO macros = calculation.getMacroDistribution();
         settings.setProtein(macros.getProteinGrams());
         settings.setFats(macros.getFatsGrams());
         settings.setCarbs(macros.getCarbsGrams());
 
-        // Актуализираме времето на последното изчисление
         settings.setLastCalculation(calculation.getCalculationDate());
 
-        // Запазваме промените
         PersonalSettings updatedSettings = personalSettingsRepository.save(settings);
 
-        // Връщаме актуализираните настройки като DTO
         return convertToDTO(updatedSettings);
     }
 
@@ -149,8 +143,7 @@ public class PersonalSettingsServiceImpl implements PersonalSettingsService {
                 settings.getActivityLevel(),
                 settings.getBmr(),
                 settings.getTdee(),
-                settings.getLastCalculation()
-        );
+                settings.getLastCalculation());
     }
 
     private void updateSettingsFromDTO(PersonalSettings settings, PersonalSettingsDTO dto) {
@@ -168,7 +161,6 @@ public class PersonalSettingsServiceImpl implements PersonalSettingsService {
         settings.setBmr(dto.getBmr());
         settings.setTdee(dto.getTdee());
         settings.setLastCalculation(
-                dto.getLastCalculation() != null ? dto.getLastCalculation() : LocalDateTime.now()
-        );
+                dto.getLastCalculation() != null ? dto.getLastCalculation() : LocalDateTime.now());
     }
 }

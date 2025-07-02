@@ -1,7 +1,7 @@
 package com.fitnessdump.FitnessDump.Controller;
 
-import com.fitnessdump.FitnessDump.DTOs.PredefinedProgramDTO;
-import com.fitnessdump.FitnessDump.DTOs.TrainingProgramDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.PredefinedProgramDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.TrainingProgramDTO;
 import com.fitnessdump.FitnessDump.Model.Enum.DifficultyLevel;
 import com.fitnessdump.FitnessDump.Model.Enum.ProgramGoal;
 import com.fitnessdump.FitnessDump.Service.PredefinedProgramService;
@@ -99,7 +99,6 @@ public class PredefinedProgramController {
         }
     }
 
-    // Exception handler for general validation errors
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity

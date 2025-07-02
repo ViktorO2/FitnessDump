@@ -1,11 +1,14 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.ExerciseCategoryDTO;
-import com.fitnessdump.FitnessDump.Model.ExerciseCategory;
+import com.fitnessdump.FitnessDump.DTOs.Exercise.ExerciseCategoryDTO;
+import com.fitnessdump.FitnessDump.Model.Exercise.Exercise;
+import com.fitnessdump.FitnessDump.Model.Exercise.ExerciseCategory;
 import com.fitnessdump.FitnessDump.Repository.ExerciseCategoryRepository;
+import com.fitnessdump.FitnessDump.Repository.ExerciseRepository;
 import com.fitnessdump.FitnessDump.Service.ExerciseCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +18,13 @@ import java.util.stream.Collectors;
 public class ExerciseCategoryServiceImpl implements ExerciseCategoryService {
 
     private final ExerciseCategoryRepository categoryRepository;
+    private final ExerciseRepository exerciseRepository;
 
     @Autowired
-    public ExerciseCategoryServiceImpl(ExerciseCategoryRepository categoryRepository) {
+    public ExerciseCategoryServiceImpl(ExerciseCategoryRepository categoryRepository,
+            ExerciseRepository exerciseRepository) {
         this.categoryRepository = categoryRepository;
+        this.exerciseRepository = exerciseRepository;
     }
 
     private ExerciseCategoryDTO convertToDTO(ExerciseCategory category) {
@@ -54,7 +60,21 @@ public class ExerciseCategoryServiceImpl implements ExerciseCategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long id) {
+        Optional<ExerciseCategory> categoryOptional = categoryRepository.findById(id);
+        if (categoryOptional.isEmpty()) {
+            throw new RuntimeException("Category not found with ID: " + id);
+        }
+
+        ExerciseCategory category = categoryOptional.get();
+
+        List<Exercise> exercisesInCategory = exerciseRepository.findByCategoryId(id);
+
+        if (!exercisesInCategory.isEmpty()) {
+            exerciseRepository.deleteAll(exercisesInCategory);
+        }
+
         categoryRepository.deleteById(id);
     }
 

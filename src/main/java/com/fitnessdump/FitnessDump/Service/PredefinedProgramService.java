@@ -1,7 +1,7 @@
 package com.fitnessdump.FitnessDump.Service;
 
-import com.fitnessdump.FitnessDump.DTOs.PredefinedProgramDTO;
-import com.fitnessdump.FitnessDump.DTOs.TrainingProgramDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.PredefinedProgramDTO;
+import com.fitnessdump.FitnessDump.DTOs.Training.TrainingProgramDTO;
 import com.fitnessdump.FitnessDump.Model.Enum.DifficultyLevel;
 import com.fitnessdump.FitnessDump.Model.Enum.ProgramGoal;
 

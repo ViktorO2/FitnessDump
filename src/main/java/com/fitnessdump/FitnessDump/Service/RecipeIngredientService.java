@@ -1,6 +1,6 @@
 package com.fitnessdump.FitnessDump.Service;
 
-import com.fitnessdump.FitnessDump.DTOs.RecipeIngredientDTO;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.RecipeIngredientDTO;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,9 +1,9 @@
 package com.fitnessdump.FitnessDump.Service.Impl;
 
-import com.fitnessdump.FitnessDump.DTOs.RecipeIngredientDTO;
-import com.fitnessdump.FitnessDump.Model.Food;
-import com.fitnessdump.FitnessDump.Model.Recipe;
-import com.fitnessdump.FitnessDump.Model.RecipeIngredient;
+import com.fitnessdump.FitnessDump.DTOs.Nutrition.RecipeIngredientDTO;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Food;
+import com.fitnessdump.FitnessDump.Model.Nutrition.Recipe;
+import com.fitnessdump.FitnessDump.Model.Nutrition.RecipeIngredient;
 import com.fitnessdump.FitnessDump.Repository.FoodRepository;
 import com.fitnessdump.FitnessDump.Repository.RecipeIngredientRepository;
 import com.fitnessdump.FitnessDump.Repository.RecipeRepository;
